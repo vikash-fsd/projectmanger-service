@@ -10,6 +10,6 @@ import com.fsd.model.Project;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-	@Query("FROM Project WHERE project_name = ?1")
-    List<Project> findByProjectName(String project_name);
+	@Query("FROM Project WHERE projectname = ?1")
+    List<Project> findByProjectName(String projectname);
 }

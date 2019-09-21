@@ -20,32 +20,32 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Project {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "project_id")
-	long project_id;
+	@Column(name = "projectid")
+	long projectid;
 	
-	@Column(name = "project_name")
-	@Size(max = 50, min = 6, message = "{project.project_name.invalid}")
+	@Column(name = "projectname")
+	@Size(max = 50, min = 6, message = "{Project.projectname.invalid}")
 	String project_name;
 	
-	@Column(name = "start_date")
-	Date start_date;
+	@Column(name = "startdate")
+	Date startdate;
 		
-	@Column(name = "end_date")
-	Date end_date;
+	@Column(name = "enddate")
+	Date enddate;
 	
 	@Column(name = "priority")
 	int priority;
 	
 	@ManyToOne
-	@JoinColumn(name="user_id", nullable=false)
+	@JoinColumn(name="userid", nullable=false)
 	Users user;
 
-	public long getProject_id() {
-		return project_id;
+	public long getProjectid() {
+		return projectid;
 	}
 
-	public void setProject_id(long project_id) {
-		this.project_id = project_id;
+	public void setProjectid(long projectid) {
+		this.projectid = projectid;
 	}
 
 	public String getProject_name() {
@@ -56,20 +56,20 @@ public class Project {
 		this.project_name = project_name;
 	}
 
-	public Date getStart_date() {
-		return start_date;
+	public Date getStartdate() {
+		return startdate;
 	}
 
-	public void setStart_date(Date start_date) {
-		this.start_date = start_date;
+	public void setStartdate(Date startdate) {
+		this.startdate = startdate;
 	}
 
-	public Date getEnd_date() {
-		return end_date;
+	public Date getEnddate() {
+		return enddate;
 	}
 
-	public void setEnd_date(Date end_date) {
-		this.end_date = end_date;
+	public void setEnddate(Date enddate) {
+		this.enddate = enddate;
 	}
 
 	public int getPriority() {
@@ -86,5 +86,5 @@ public class Project {
 
 	public void setUser(Users user) {
 		this.user = user;
-	}
+	}	
 }

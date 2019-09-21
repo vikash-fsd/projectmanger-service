@@ -38,49 +38,49 @@ public class UsersController {
 		return ResponseEntity.ok().body(users);
 	}
 	
-	@GetMapping("/Users/{user_id}")
-	public ResponseEntity<Users> getUserById(@PathVariable("user_id") long user_id) {
-		Users users = usersRepository.getOne(user_id);
+	@GetMapping("/User/{userid}")
+	public ResponseEntity<Users> getUserById(@PathVariable("userid") long userid) {
+		Users users = usersRepository.getOne(userid);
 		if(users!=null)
 			return ResponseEntity.ok().body(users);
 		else
-			throw new ResourceNotFoundException("User", "ID", user_id);
+			throw new ResourceNotFoundException("User", "ID", userid);
 	}
 	
-	@GetMapping("/searchUser/{first_name}")
-	public ResponseEntity<List<Users>> searchByFirstName(@PathVariable("first_name") String first_name) {
-		List<Users> users = usersRepository.findByFirstName(first_name);
+	@GetMapping("/searchUser/{firstname}")
+	public ResponseEntity<List<Users>> searchByFirstName(@PathVariable("firstname") String firstname) {
+		List<Users> users = usersRepository.findByFirstName(firstname);
 		return ResponseEntity.ok().body(users);
 	}
 
-	@DeleteMapping("/deleteUser/{user_id}")
-	public ResponseEntity<?> deleteUser(@PathVariable("user_id") long user_id) {
-		Users user = usersRepository.getOne(user_id);
+	@DeleteMapping("/deleteUser/{userid}")
+	public ResponseEntity<?> deleteUser(@PathVariable("userid") long userid) {
+		Users user = usersRepository.getOne(userid);
 		if(user!=null) {
 			usersRepository.delete(user);
-			return ResponseEntity.ok().body("User with ID " + user_id + " has been deleted.");
+			return ResponseEntity.ok().body("User with ID " + userid + " has been deleted.");
 		
 		}else
-			throw new ResourceNotFoundException("User", "ID", user_id);
+			throw new ResourceNotFoundException("User", "ID", userid);
 	}
 
 	@PostMapping("/addUser")
 	public ResponseEntity<?> saveUser(@Valid @RequestBody Users user) {
 		usersRepository.save(user);
-		return ResponseEntity.ok().body("User detail has been saved.");
+		return ResponseEntity.accepted().body("User detail has been saved.");
 	}
 	
-	@PutMapping("/updateUser/{user_id}")
-	public ResponseEntity<?> updateUser(@Valid @PathVariable("user_id") long user_id, @Valid @RequestBody Users userDetail) {
-		Users user = usersRepository.getOne(user_id);
+	@PutMapping("/updateUser/{userid}")
+	public ResponseEntity<?> updateUser(@Valid @PathVariable("userid") long userid, @Valid @RequestBody Users userDetail) {
+		Users user = usersRepository.getOne(userid);
 		if(user!=null) {
-			user.setFirst_name(userDetail.getFirst_name());
-			user.setLast_name(userDetail.getLast_name());
-			user.setEmployee_id(userDetail.getEmployee_id());
+			user.setFirstname(userDetail.getFirstname());
+			user.setLastname(userDetail.getLastname());
+			user.setEmployeeid(userDetail.getEmployeeid());
 			usersRepository.save(user);
-			return ResponseEntity.ok().body("User with ID " + user_id + " has been updated.");
+			return ResponseEntity.ok().body("User with ID " + userid + " has been updated.");
 		
 		}else
-			throw new ResourceNotFoundException("User", "ID", user_id);
+			throw new ResourceNotFoundException("User", "ID", userid);
 	}
 }

@@ -38,51 +38,51 @@ public class ProjectController {
 		return ResponseEntity.ok().body(projects);
 	}
 	
-	@GetMapping("/Project/{project_id}")
-	public ResponseEntity<Project> getProjectById(@PathVariable("project_id") long project_id) {
-		Project projects = projectRepository.getOne(project_id);
+	@GetMapping("/Project/{projectid}")
+	public ResponseEntity<Project> getProjectById(@PathVariable("projectid") long projectid) {
+		Project projects = projectRepository.getOne(projectid);
 		if(projects!=null)
 			return ResponseEntity.ok().body(projects);
 		else
-			throw new ResourceNotFoundException("Project", "ID", project_id);
+			throw new ResourceNotFoundException("Project", "ID", projectid);
 	}
 	
-	@GetMapping("/searchProject/{project_name}")
-	public ResponseEntity<List<Project>> searchByProjectName(@PathVariable("project_name") String project_name) {
-		List<Project> projects = projectRepository.findByProjectName(project_name);
+	@GetMapping("/searchProject/{projectname}")
+	public ResponseEntity<List<Project>> searchByProjectName(@PathVariable("projectname") String projectname) {
+		List<Project> projects = projectRepository.findByProjectName(projectname);
 		return ResponseEntity.ok().body(projects);
 	}
 
-	@DeleteMapping("/deleteProject/{project_id}")
-	public ResponseEntity<?> deleteProject(@PathVariable("project_id") long project_id) {
-		Project projects = projectRepository.getOne(project_id);
+	@DeleteMapping("/deleteProject/{projectid}")
+	public ResponseEntity<?> deleteProject(@PathVariable("projectid") long projectid) {
+		Project projects = projectRepository.getOne(projectid);
 		if(projects!=null) {
 			projectRepository.delete(projects);
-			return ResponseEntity.ok().body("Project with ID " + project_id + " has been deleted.");
+			return ResponseEntity.ok().body("Project with ID " + projectid + " has been deleted.");
 		
 		}else
-			throw new ResourceNotFoundException("Project", "ID", project_id);
+			throw new ResourceNotFoundException("Project", "ID", projectid);
 	}
 
 	@PostMapping("/addProject")
 	public ResponseEntity<?> saveProject(@RequestBody Project project) {
 		projectRepository.save(project);
-		return ResponseEntity.ok().body("Project detail has been saved.");
+		return ResponseEntity.accepted().body("Project detail has been saved.");
 	}
 	
-	@PutMapping("/updateProject/{project_id}")
-	public ResponseEntity<?> updateProject(@Valid @PathVariable("project_id") long project_id, @Valid @RequestBody Project projectDetail) {
-		Project project = projectRepository.getOne(project_id);
+	@PutMapping("/updateProject/{projectid}")
+	public ResponseEntity<?> updateProject(@Valid @PathVariable("projectid") long projectid, @Valid @RequestBody Project projectDetail) {
+		Project project = projectRepository.getOne(projectid);
 		if(project!=null) {
 			project.setProject_name(projectDetail.getProject_name());
-			project.setStart_date(projectDetail.getStart_date());
-			project.setEnd_date(projectDetail.getEnd_date());
+			project.setStartdate(projectDetail.getStartdate());
+			project.setEnddate(projectDetail.getEnddate());
 			project.setPriority(projectDetail.getPriority());
 			project.setUser(projectDetail.getUser());
 			projectRepository.save(project);
-			return ResponseEntity.ok().body("Project with ID " + project_id + " has been updated.");
+			return ResponseEntity.ok().body("Project with ID " + projectid + " has been updated.");
 		
 		}else
-			throw new ResourceNotFoundException("Project", "ID", project_id);
+			throw new ResourceNotFoundException("Project", "ID", projectid);
 	}
 }

@@ -16,50 +16,62 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class Users {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "user_id")
-	long user_id;
+	@Column(name = "userid")
+	long userid;
 	
-	@Column(name = "first_name", nullable=false)
-	@Size(max = 20, min = 3, message = "{users.firstname.invalid}")
-	String first_name;
+	@Column(name = "firstname", nullable=false)
+	@Size(max = 20, min = 3, message = "{Users.firstname.invalid}")
+	String firstname;
 	
-	@Column(name = "last_name", nullable=false)
-	@Size(max = 20, min = 3, message = "{users.lastname.invalid}")
-	String last_name;
+	@Column(name = "lastname", nullable=false)
+	@Size(max = 20, min = 3, message = "{Users.lastname.invalid}")
+	String lastname;
 		
-	@Column(name = "employee_id", nullable=false)
-	long employee_id;
+	@Column(name = "employeeid", nullable=false)
+	long employeeid;
 
-	public long getUser_id() {
-		return user_id;
+	public long getUserid() {
+		return userid;
 	}
 
-	public void setUser_id(long user_id) {
-		this.user_id = user_id;
+	public void setUserid(long userid) {
+		this.userid = userid;
 	}
 
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
-	public String getLast_name() {
-		return last_name;
+	public String getLastname() {
+		return lastname;
 	}
 
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
-	public long getEmployee_id() {
-		return employee_id;
+	public long getEmployeeid() {
+		return employeeid;
 	}
 
-	public void setEmployee_id(long employee_id) {
-		this.employee_id = employee_id;
+	public void setEmployeeid(long employeeid) {
+		this.employeeid = employeeid;
+	}
+	
+	public Users() {
+		
 	}
 
+	public Users(@Size(max = 20, min = 3, message = "{Users.firstname.invalid}") String firstname,
+			@Size(max = 20, min = 3, message = "{Users.lastname.invalid}") String lastname, long employeeid) {
+		super();
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.employeeid = employeeid;
+	}
+		
 }

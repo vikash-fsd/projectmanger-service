@@ -17,26 +17,26 @@ public class ParentTask {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "parent_id")
-	long parent_id;
+	@Column(name = "parentid")
+	long parentid;
 	
-	@Column(name = "parent_task", nullable=false)
-	@Size(max = 100, min = 10, message = "{parent_task.parent_task.invalid}")
-	String parent_task;
+	@Column(name = "parenttask", nullable=false)
+	@Size(max = 100, min = 10, message = "{ParentTask.parenttask.invalid}")
+	String parenttask;
 
-	public long getParent_id() {
-		return parent_id;
+	public long getParentid() {
+		return parentid;
 	}
 
-	public void setParent_id(long parent_id) {
-		this.parent_id = parent_id;
+	public void setParentid(long parentid) {
+		this.parentid = parentid;
 	}
 
-	public String getParent_task() {
-		return parent_task;
+	public String getParenttask() {
+		return parenttask;
 	}
 
-	public void setParent_task(String parent_task) {
-		this.parent_task = parent_task;
+	public void setParenttask(String parenttask) {
+		this.parenttask = parenttask;
 	}
 }

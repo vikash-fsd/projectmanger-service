@@ -17,24 +17,24 @@ import javax.validation.constraints.Size;
 public class Task {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "task_id")
-	long task_id;
+	@Column(name = "taskid")
+	long taskid;
 	
-	@Column(name = "parent_id")
-	long parent_id;
+	@Column(name = "parentid")
+	long parentid;
 	
-	@Column(name = "project_id")
-	long project_id;
+	@Column(name = "projectid")
+	long projectid;
 	
-	@Column(name = "task_name")
-	@Size(max = 100, min = 10, message = "{task.task.invalid}")
-	String task_name;
+	@Column(name = "taskname")
+	@Size(max = 100, min = 10, message = "{Task.taskname.invalid}")
+	String taskname;
 	
-	@Column(name = "start_date")
-	Date start_date;
+	@Column(name = "startdate")
+	Date startdate;
 		
-	@Column(name = "end_date")
-	Date end_date;
+	@Column(name = "enddate")
+	Date enddate;
 	
 	@Column(name = "priority")
 	int priority;
@@ -43,55 +43,55 @@ public class Task {
 	String status;
 	
 	@ManyToOne
-	@JoinColumn(name="user_id", nullable=false)
+	@JoinColumn(name="userid", nullable=false)
 	Users user;
 
-	public long getTask_id() {
-		return task_id;
+	public long getTaskid() {
+		return taskid;
 	}
 
-	public void setTask_id(long task_id) {
-		this.task_id = task_id;
+	public void setTaskid(long taskid) {
+		this.taskid = taskid;
 	}
 
-	public long getParent_id() {
-		return parent_id;
+	public long getParentid() {
+		return parentid;
 	}
 
-	public void setParent_id(long parent_id) {
-		this.parent_id = parent_id;
+	public void setParentid(long parentid) {
+		this.parentid = parentid;
 	}
 
-	public long getProject_id() {
-		return project_id;
+	public long getProjectid() {
+		return projectid;
 	}
 
-	public void setProject_id(long project_id) {
-		this.project_id = project_id;
+	public void setProjectid(long projectid) {
+		this.projectid = projectid;
 	}
 
-	public String getTask_name() {
-		return task_name;
+	public String getTaskname() {
+		return taskname;
 	}
 
-	public void setTask_name(String task_name) {
-		this.task_name = task_name;
+	public void setTaskname(String taskname) {
+		this.taskname = taskname;
 	}
 
-	public Date getStart_date() {
-		return start_date;
+	public Date getStartdate() {
+		return startdate;
 	}
 
-	public void setStart_date(Date start_date) {
-		this.start_date = start_date;
+	public void setStartdate(Date startdate) {
+		this.startdate = startdate;
 	}
 
-	public Date getEnd_date() {
-		return end_date;
+	public Date getEnddate() {
+		return enddate;
 	}
 
-	public void setEnd_date(Date end_date) {
-		this.end_date = end_date;
+	public void setEnddate(Date enddate) {
+		this.enddate = enddate;
 	}
 
 	public int getPriority() {
@@ -109,7 +109,7 @@ public class Task {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public Users getUser() {
 		return user;
 	}
@@ -117,4 +117,5 @@ public class Task {
 	public void setUser(Users user) {
 		this.user = user;
 	}
+	
 }
