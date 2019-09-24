@@ -78,11 +78,11 @@ public class TaskController {
 		if(task!=null) {
 			task.setTaskname(taskDetail.getTaskname());
 			task.setParentid(taskDetail.getParentid());
-			task.setProject(taskDetail.getProject());
+			task.setProjectid(taskDetail.getProjectid());
 			task.setStartdate(taskDetail.getStartdate());
 			task.setEnddate(taskDetail.getEnddate());
 			task.setPriority(taskDetail.getPriority());
-			task.setUser(taskDetail.getUser());
+			task.setUserid(taskDetail.getUserid());
 			taskRepository.save(task);
 			return ResponseEntity.ok().body(appResponse = new AppResponse(true, task, "Task detail of "+taskid+ " updated."));
 		}else

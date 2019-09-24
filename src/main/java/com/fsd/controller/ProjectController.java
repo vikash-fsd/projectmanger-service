@@ -30,7 +30,7 @@ public class ProjectController {
 		return ResponseEntity.ok().body(appResponse = new AppResponse(true, projects, "Project List"));
 	}
 	
-	@GetMapping("/sortProject/{sort_by}")
+	@GetMapping("/sortProjects/{sort_by}")
 	public ResponseEntity<?> getAllProjectInOrder(@PathVariable("sort_by") String sort_by) {
 		Sort sort = new Sort(Sort.DEFAULT_DIRECTION, sort_by);
 		List<Project> projects = projectRepository.findAll(sort);
@@ -61,8 +61,7 @@ public class ProjectController {
 			return ResponseEntity.ok().body(appResponse = new AppResponse(true, null, "Project detail of "+projectid+ "deleted."));		
 		}else {
 			return ResponseEntity.ok().body(appResponse = new AppResponse(false, null, "Problem deleting detail of "+projectid));					
-		}
-			
+		}			
 	}
 
 	@PostMapping("/addProject")
@@ -79,7 +78,7 @@ public class ProjectController {
 			project.setPriority(projectDetail.getPriority());
 			project.setStartdate(projectDetail.getStartdate());
 			project.setEnddate(projectDetail.getEnddate());
-			project.setUser(projectDetail.getUser());
+			project.setUserid(projectDetail.getUserid());
 			projectRepository.save(project);
 			return ResponseEntity.ok().body(appResponse = new AppResponse(true, project, "Project detail of "+projectid+ " updated."));
 		}else

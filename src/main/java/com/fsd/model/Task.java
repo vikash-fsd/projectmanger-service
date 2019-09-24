@@ -1,31 +1,31 @@
 package com.fsd.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "task")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Task {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "taskid")
 	long taskid;
 	
-	@Column(name = "parentid")
-	long parentid;
+	@Column(name = "parentid", nullable=true)
+	Long parentid;
 	
-	@ManyToOne
-	@JoinColumn(name="projectid", nullable=false)
-	Project project;
+	@Column(name = "projectid")
+	long projectid;
 
 	
 	@Column(name = "taskname")
@@ -34,7 +34,7 @@ public class Task {
 	
 	@Column(name = "startdate")
 	Date startdate;
-		
+	
 	@Column(name = "enddate")
 	Date enddate;
 	
@@ -42,11 +42,10 @@ public class Task {
 	int priority;
 	
 	@Column(name = "status")
-	String status;
+	int status;
 	
-	@ManyToOne
-	@JoinColumn(name="userid", nullable=false)
-	Users user;
+	@Column(name = "userid")
+	long userid;
 
 	public long getTaskid() {
 		return taskid;
@@ -56,20 +55,20 @@ public class Task {
 		this.taskid = taskid;
 	}
 
-	public long getParentid() {
+	public Long getParentid() {
 		return parentid;
 	}
 
-	public void setParentid(long parentid) {
+	public void setParentid(Long parentid) {
 		this.parentid = parentid;
 	}
 
-	public Project getProject() {
-		return project;
+	public long getProjectid() {
+		return projectid;
 	}
 
-	public void setProject(Project project) {
-		this.project = project;
+	public void setProjectid(long projectid) {
+		this.projectid = projectid;
 	}
 
 	public String getTaskname() {
@@ -104,34 +103,38 @@ public class Task {
 		this.priority = priority;
 	}
 
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 
-	public Users getUser() {
-		return user;
+	public long getUserid() {
+		return userid;
 	}
 
-	public void setUser(Users user) {
-		this.user = user;
+	public void setUserid(long userid) {
+		this.userid = userid;
+	}
+	
+	public Task() {
+		
 	}
 
-	public Task(long parentid, Project project,
+	public Task(Long parentid, long projectid,
 			@Size(max = 100, min = 10, message = "{Task.taskname.invalid}") String taskname, Date startdate,
-			Date enddate, int priority, String status, Users user) {
+			Date enddate, int priority, int status, long userid) {
 		super();
 		this.parentid = parentid;
-		this.project = project;
+		this.projectid = projectid;
 		this.taskname = taskname;
 		this.startdate = startdate;
 		this.enddate = enddate;
 		this.priority = priority;
 		this.status = status;
-		this.user = user;
+		this.userid = userid;
 	}
 
 }

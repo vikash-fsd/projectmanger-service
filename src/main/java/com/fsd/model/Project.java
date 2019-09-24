@@ -1,17 +1,16 @@
 package com.fsd.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -29,16 +28,16 @@ public class Project {
 	
 	@Column(name = "startdate")
 	Date startdate;
-		
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	@Column(name = "enddate")
 	Date enddate;
 	
 	@Column(name = "priority")
 	int priority;
 	
-	@ManyToOne
-	@JoinColumn(name="userid", nullable=false)
-	Users user;
+	@Column(name = "userid")
+	long userid;
 
 	public long getProjectid() {
 		return projectid;
@@ -80,21 +79,25 @@ public class Project {
 		this.priority = priority;
 	}
 
-	public Users getUser() {
-		return user;
+	public long getUserid() {
+		return userid;
 	}
 
-	public void setUser(Users user) {
-		this.user = user;
+	public void setUserid(long userid) {
+		this.userid = userid;
+	}
+	
+	public Project() {
+		
 	}
 
 	public Project(@Size(max = 50, min = 6, message = "{Project.projectname.invalid}") String projectname,
-			Date startdate, Date enddate, int priority, Users user) {
+			Date startdate, Date enddate, int priority, long userid) {
 		super();
 		this.projectname = projectname;
 		this.startdate = startdate;
 		this.enddate = enddate;
 		this.priority = priority;
-		this.user = user;
+		this.userid = userid;
 	}	
 }

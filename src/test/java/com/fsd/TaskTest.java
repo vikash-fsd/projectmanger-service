@@ -2,7 +2,7 @@ package com.fsd;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -12,20 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.fsd.model.Project;
 import com.fsd.model.Task;
-import com.fsd.model.Users;
-import com.fsd.repository.ProjectRepository;
 import com.fsd.repository.TaskRepository;
-import com.fsd.repository.UsersRepository;
 
 public class TaskTest extends AbstractTest{
-	@Autowired
-	private UsersRepository usersRepository;
-	
-	@Autowired
-	private ProjectRepository projectRepository;
-	
 	@Autowired
 	private TaskRepository taskRepository;
 	
@@ -35,7 +25,7 @@ public class TaskTest extends AbstractTest{
 	public void setUp() {
 		super.setUp();
 	}
-
+	
 	@Test
 	public void testGetAllTasks() throws Exception {
 		String uri = "/Tasks";
@@ -63,8 +53,21 @@ public class TaskTest extends AbstractTest{
 	}
 	
 	@Test
+	public void testSearchTaskByTaskName() throws Exception {
+		String uri = "/searchTask/Test Task Name";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+		//String content = mvcResult.getResponse().getContentAsString();
+		//Users[] userlist = super.mapFromJson(content, Users[].class);
+		//assertTrue(userlist.length > 0);
+	}
+	
+	@Test
 	public void testSortTasks() throws Exception {
-		String uri = "/sortTasks/taskid";
+		String uri = "/sortTasks/taskname";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -77,10 +80,8 @@ public class TaskTest extends AbstractTest{
 
 	@Test
 	public void testAddTask() throws Exception {
-		Users user = usersRepository.getOne((long)1);
-		Project project = projectRepository.getOne((long)1);
 		String uri = "/addTask";
-		Task task = new Task(0,project,"Added Test Task", new Date("2019/09/20"), new Date("2020/09/20"), 10, "Inprogress", user);
+		Task task = new Task(null, 1, "Added Test Task", new Date(2019-9-20), new Date(2020-9-20), 10, 0, 1);
 		String inputJson = super.mapToJson(task);
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)

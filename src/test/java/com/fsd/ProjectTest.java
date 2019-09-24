@@ -2,7 +2,7 @@ package com.fsd;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -13,15 +13,10 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fsd.model.Project;
-import com.fsd.model.Users;
 import com.fsd.repository.ProjectRepository;
-import com.fsd.repository.UsersRepository;
 
 public class ProjectTest extends AbstractTest{
 
-	@Autowired
-	private UsersRepository usersRepository;
-	
 	@Autowired
 	private ProjectRepository projectRepository;
 	
@@ -58,6 +53,40 @@ public class ProjectTest extends AbstractTest{
 	}
 	
 	@Test
+	public void testAddProject() throws Exception {
+		String uri = "/addProject";
+		Project prj = new Project("Added Test Project", new Date(2019-9-20), new Date(2020-9-20), 2, (long)1);
+		String inputJson = super.mapToJson(prj);
+		
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(inputJson)).andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+		//String content = mvcResult.getResponse().getContentAsString();
+		//assertEquals(content, "User detail has been saved.");
+	}
+	
+	@Test
+	public void testUpdateProject() throws Exception {		
+		List<Project> projects = projectRepository.findByProjectName("Test Project");
+		
+		Project project = projects.get(0);
+		String uri = "/updateProject/"+project.getProjectid();
+		project.setPriority(20);
+		
+		String inputJson = super.mapToJson(project);
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+	         .contentType(MediaType.APPLICATION_JSON_VALUE)
+	         .content(inputJson)).andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+		//content = mvcResult.getResponse().getContentAsString();
+		//(content, "User with ID " + user.getUserid() + " has been updated.");
+	}
+	@Test
 	public void testSortProjects() throws Exception {
 		String uri = "/sortProjects/projectname";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
@@ -81,41 +110,6 @@ public class ProjectTest extends AbstractTest{
 		//String content = mvcResult.getResponse().getContentAsString();
 		//Users[] userlist = super.mapFromJson(content, Users[].class);
 		//assertTrue(userlist.length > 0);
-	}
-
-	@Test
-	public void testAddProject() throws Exception {
-		Users user = usersRepository.getOne((long)1);
-		String uri = "/addProject";
-		Project prj = new Project("Added Test Project", new Date("2019/09/20"), new Date("2020/09/20"), 2, user);
-		String inputJson = super.mapToJson(prj);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
-				.contentType(MediaType.APPLICATION_JSON_VALUE)
-				.content(inputJson)).andReturn();
-
-		int status = mvcResult.getResponse().getStatus();
-		assertEquals(200, status);
-		//String content = mvcResult.getResponse().getContentAsString();
-		//assertEquals(content, "User detail has been saved.");
-	}
-
-	@Test
-	public void testUpdateProject() throws Exception {		
-		List<Project> projects = projectRepository.findByProjectName("Added Test Project");
-		
-		Project project = projects.get(0);
-		String uri = "/updateProject/"+project.getProjectid();
-		project.setPriority(20);
-		
-		String inputJson = super.mapToJson(project);
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
-	         .contentType(MediaType.APPLICATION_JSON_VALUE)
-	         .content(inputJson)).andReturn();
-
-		int status = mvcResult.getResponse().getStatus();
-		assertEquals(200, status);
-		//content = mvcResult.getResponse().getContentAsString();
-		//(content, "User with ID " + user.getUserid() + " has been updated.");
 	}
 
 	@Test
