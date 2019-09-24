@@ -23,8 +23,10 @@ public class Task {
 	@Column(name = "parentid")
 	long parentid;
 	
-	@Column(name = "projectid")
-	long projectid;
+	@ManyToOne
+	@JoinColumn(name="projectid", nullable=false)
+	Project project;
+
 	
 	@Column(name = "taskname")
 	@Size(max = 100, min = 10, message = "{Task.taskname.invalid}")
@@ -62,12 +64,12 @@ public class Task {
 		this.parentid = parentid;
 	}
 
-	public long getProjectid() {
-		return projectid;
+	public Project getProject() {
+		return project;
 	}
 
-	public void setProjectid(long projectid) {
-		this.projectid = projectid;
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 	public String getTaskname() {
@@ -117,5 +119,19 @@ public class Task {
 	public void setUser(Users user) {
 		this.user = user;
 	}
-	
+
+	public Task(long parentid, Project project,
+			@Size(max = 100, min = 10, message = "{Task.taskname.invalid}") String taskname, Date startdate,
+			Date enddate, int priority, String status, Users user) {
+		super();
+		this.parentid = parentid;
+		this.project = project;
+		this.taskname = taskname;
+		this.startdate = startdate;
+		this.enddate = enddate;
+		this.priority = priority;
+		this.status = status;
+		this.user = user;
+	}
+
 }

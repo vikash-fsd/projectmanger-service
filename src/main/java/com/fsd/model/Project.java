@@ -25,7 +25,7 @@ public class Project {
 	
 	@Column(name = "projectname")
 	@Size(max = 50, min = 6, message = "{Project.projectname.invalid}")
-	String project_name;
+	String projectname;
 	
 	@Column(name = "startdate")
 	Date startdate;
@@ -48,12 +48,12 @@ public class Project {
 		this.projectid = projectid;
 	}
 
-	public String getProject_name() {
-		return project_name;
+	public String getProjectname() {
+		return projectname;
 	}
 
-	public void setProject_name(String project_name) {
-		this.project_name = project_name;
+	public void setProjectname(String projectname) {
+		this.projectname = projectname;
 	}
 
 	public Date getStartdate() {
@@ -85,6 +85,16 @@ public class Project {
 	}
 
 	public void setUser(Users user) {
+		this.user = user;
+	}
+
+	public Project(@Size(max = 50, min = 6, message = "{Project.projectname.invalid}") String projectname,
+			Date startdate, Date enddate, int priority, Users user) {
+		super();
+		this.projectname = projectname;
+		this.startdate = startdate;
+		this.enddate = enddate;
+		this.priority = priority;
 		this.user = user;
 	}	
 }

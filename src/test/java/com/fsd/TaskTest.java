@@ -1,8 +1,8 @@
 package com.fsd;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -12,14 +12,23 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fsd.model.Project;
+import com.fsd.model.Task;
 import com.fsd.model.Users;
+import com.fsd.repository.ProjectRepository;
+import com.fsd.repository.TaskRepository;
 import com.fsd.repository.UsersRepository;
 
-public class UsersTest extends AbstractTest{
-
+public class TaskTest extends AbstractTest{
 	@Autowired
 	private UsersRepository usersRepository;
+	
+	@Autowired
+	private ProjectRepository projectRepository;
+	
+	@Autowired
+	private TaskRepository taskRepository;
+	
 	
 	@Override
 	@Before
@@ -28,8 +37,8 @@ public class UsersTest extends AbstractTest{
 	}
 
 	@Test
-	public void testGetAllUsers() throws Exception {
-		String uri = "/Users";
+	public void testGetAllTasks() throws Exception {
+		String uri = "/Tasks";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -41,8 +50,8 @@ public class UsersTest extends AbstractTest{
 	}
 	
 	@Test
-	public void testGetUserById() throws Exception {
-		String uri = "/User/1";
+	public void testGetTaskById() throws Exception {
+		String uri = "/Task/1";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -54,21 +63,8 @@ public class UsersTest extends AbstractTest{
 	}
 	
 	@Test
-	public void testSortUsers() throws Exception {
-		String uri = "/sortUsers/firstname";
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
-				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
-
-		int status = mvcResult.getResponse().getStatus();
-		assertEquals(200, status);
-		//String content = mvcResult.getResponse().getContentAsString();
-		//Users[] userlist = super.mapFromJson(content, Users[].class);
-		//assertTrue(userlist.length > 0);
-	}
-	
-	@Test
-	public void testSearchUserByFirstName() throws Exception {
-		String uri = "/searchUser/Test";
+	public void testSortTasks() throws Exception {
+		String uri = "/sortTasks/taskid";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -80,10 +76,12 @@ public class UsersTest extends AbstractTest{
 	}
 
 	@Test
-	public void testAddUser() throws Exception {
-		String uri = "/addUser";
-		Users user = new Users("Added", "User", 100000);
-		String inputJson = super.mapToJson(user);
+	public void testAddTask() throws Exception {
+		Users user = usersRepository.getOne((long)1);
+		Project project = projectRepository.getOne((long)1);
+		String uri = "/addTask";
+		Task task = new Task(0,project,"Added Test Task", new Date("2019/09/20"), new Date("2020/09/20"), 10, "Inprogress", user);
+		String inputJson = super.mapToJson(task);
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(inputJson)).andReturn();
@@ -95,15 +93,14 @@ public class UsersTest extends AbstractTest{
 	}
 
 	@Test
-	public void testUpdateUser() throws Exception {
+	public void testUpdateTask() throws Exception {		
+		List<Task> tasks = taskRepository.findByTaskName("Added Test Task");
 		
-		List<Users> users = usersRepository.findByFirstName("Added");
+		Task task = tasks.get(0);
+		String uri = "/updateTask/"+task.getTaskid();
+		task.setPriority(20);
 		
-		Users user = users.get(0);
-		String uri = "/updateUser/"+user.getUserid();
-		user.setLastname("User_Updated");
-		
-		String inputJson = super.mapToJson(user);
+		String inputJson = super.mapToJson(task);
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
 	         .contentType(MediaType.APPLICATION_JSON_VALUE)
 	         .content(inputJson)).andReturn();
@@ -115,12 +112,12 @@ public class UsersTest extends AbstractTest{
 	}
 
 	@Test
-	public void testDeleteUser() throws Exception {
-		List<Users> users = usersRepository.findByFirstName("Added");
+	public void testDeleteTask() throws Exception {
+		List<Task> tasks = taskRepository.findByTaskName("Added Test Task");
 		
-		Users user = users.get(0);
+		Task task = tasks.get(0);
 
-		String uri = "/deleteUser/"+user.getUserid();
+		String uri = "/deleteTask/"+task.getTaskid();
 		
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
 
@@ -129,5 +126,4 @@ public class UsersTest extends AbstractTest{
 		//content = mvcResult.getResponse().getContentAsString();
 		//assertEquals(content, "User with ID " + user.getUserid() + " has been deleted.");
 	}
-
 }

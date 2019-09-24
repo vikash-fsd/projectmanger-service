@@ -1,8 +1,8 @@
 package com.fsd;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -12,14 +12,18 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fsd.model.Project;
 import com.fsd.model.Users;
+import com.fsd.repository.ProjectRepository;
 import com.fsd.repository.UsersRepository;
 
-public class UsersTest extends AbstractTest{
+public class ProjectTest extends AbstractTest{
 
 	@Autowired
 	private UsersRepository usersRepository;
+	
+	@Autowired
+	private ProjectRepository projectRepository;
 	
 	@Override
 	@Before
@@ -28,8 +32,8 @@ public class UsersTest extends AbstractTest{
 	}
 
 	@Test
-	public void testGetAllUsers() throws Exception {
-		String uri = "/Users";
+	public void testGetAllProjects() throws Exception {
+		String uri = "/Projects";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -41,8 +45,8 @@ public class UsersTest extends AbstractTest{
 	}
 	
 	@Test
-	public void testGetUserById() throws Exception {
-		String uri = "/User/1";
+	public void testGetProjectById() throws Exception {
+		String uri = "/Project/1";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -54,8 +58,8 @@ public class UsersTest extends AbstractTest{
 	}
 	
 	@Test
-	public void testSortUsers() throws Exception {
-		String uri = "/sortUsers/firstname";
+	public void testSortProjects() throws Exception {
+		String uri = "/sortProjects/projectname";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -67,8 +71,8 @@ public class UsersTest extends AbstractTest{
 	}
 	
 	@Test
-	public void testSearchUserByFirstName() throws Exception {
-		String uri = "/searchUser/Test";
+	public void testSearchProjectByProjectName() throws Exception {
+		String uri = "/searchProject/Test Project";
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
 				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -80,10 +84,11 @@ public class UsersTest extends AbstractTest{
 	}
 
 	@Test
-	public void testAddUser() throws Exception {
-		String uri = "/addUser";
-		Users user = new Users("Added", "User", 100000);
-		String inputJson = super.mapToJson(user);
+	public void testAddProject() throws Exception {
+		Users user = usersRepository.getOne((long)1);
+		String uri = "/addProject";
+		Project prj = new Project("Added Test Project", new Date("2019/09/20"), new Date("2020/09/20"), 2, user);
+		String inputJson = super.mapToJson(prj);
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(inputJson)).andReturn();
@@ -95,15 +100,14 @@ public class UsersTest extends AbstractTest{
 	}
 
 	@Test
-	public void testUpdateUser() throws Exception {
+	public void testUpdateProject() throws Exception {		
+		List<Project> projects = projectRepository.findByProjectName("Added Test Project");
 		
-		List<Users> users = usersRepository.findByFirstName("Added");
+		Project project = projects.get(0);
+		String uri = "/updateProject/"+project.getProjectid();
+		project.setPriority(20);
 		
-		Users user = users.get(0);
-		String uri = "/updateUser/"+user.getUserid();
-		user.setLastname("User_Updated");
-		
-		String inputJson = super.mapToJson(user);
+		String inputJson = super.mapToJson(project);
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
 	         .contentType(MediaType.APPLICATION_JSON_VALUE)
 	         .content(inputJson)).andReturn();
@@ -115,12 +119,12 @@ public class UsersTest extends AbstractTest{
 	}
 
 	@Test
-	public void testDeleteUser() throws Exception {
-		List<Users> users = usersRepository.findByFirstName("Added");
+	public void testDeleteProject() throws Exception {
+		List<Project> projects = projectRepository.findByProjectName("Added Test Project");
 		
-		Users user = users.get(0);
+		Project project = projects.get(0);
 
-		String uri = "/deleteUser/"+user.getUserid();
+		String uri = "/deleteProject/"+project.getProjectid();
 		
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
 
@@ -129,5 +133,4 @@ public class UsersTest extends AbstractTest{
 		//content = mvcResult.getResponse().getContentAsString();
 		//assertEquals(content, "User with ID " + user.getUserid() + " has been deleted.");
 	}
-
 }
