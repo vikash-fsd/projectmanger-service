@@ -34,7 +34,7 @@ public class UsersController {
 	public ResponseEntity<?> getAllUsersInOrder(@PathVariable("sort_by") String sort_by) {
 		Sort sort = new Sort(Sort.DEFAULT_DIRECTION, sort_by);
 		List<Users> users = usersRepository.findAll(sort);
-		return ResponseEntity.ok().body(appResponse = new AppResponse(true, users, "User Sorted By "+sort));
+		return ResponseEntity.ok().body(appResponse = new AppResponse(true, users, "User Sorted By "+sort_by));
 	}
 	
 	@GetMapping("/User/{userid}")

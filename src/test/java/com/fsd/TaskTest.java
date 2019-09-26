@@ -2,7 +2,8 @@ package com.fsd;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -12,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.fsd.model.ParentTask;
 import com.fsd.model.Task;
 import com.fsd.repository.TaskRepository;
 
@@ -81,8 +83,26 @@ public class TaskTest extends AbstractTest{
 	@Test
 	public void testAddTask() throws Exception {
 		String uri = "/addTask";
-		Task task = new Task(null, 1, "Added Test Task", new Date(2019-9-20), new Date(2020-9-20), 10, 0, 1);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date startdate = dateFormat.parse("23-09-2023");
+		Date enddate = dateFormat.parse("22-09-2019");
+		Task task = new Task(null, 1, "Added Test Task", startdate, enddate, 10, 0, 1);
 		String inputJson = super.mapToJson(task);
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(inputJson)).andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+		//String content = mvcResult.getResponse().getContentAsString();
+		//assertEquals(content, "User detail has been saved.");
+	}
+	
+	@Test
+	public void testAddParentTask() throws Exception {
+		String uri = "/addParentTask";
+		ParentTask parentTask = new ParentTask("Testing Task Parent");
+		String inputJson = super.mapToJson(parentTask);
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
 				.contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(inputJson)).andReturn();

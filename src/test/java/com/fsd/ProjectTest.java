@@ -2,7 +2,8 @@ package com.fsd;
 
 import static org.junit.Assert.assertEquals;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -55,7 +56,10 @@ public class ProjectTest extends AbstractTest{
 	@Test
 	public void testAddProject() throws Exception {
 		String uri = "/addProject";
-		Project prj = new Project("Added Test Project", new Date(2019-9-20), new Date(2020-9-20), 2, (long)1);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date startdate = dateFormat.parse("23-09-2023");
+		Date enddate = dateFormat.parse("22-09-2019");
+		Project prj = new Project("Added Test Project", startdate, enddate, 2, (long)1);
 		String inputJson = super.mapToJson(prj);
 		
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)

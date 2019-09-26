@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name = "parent_task")
+@Table(name = "parenttask")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ParentTask {
 	
@@ -20,9 +20,9 @@ public class ParentTask {
 	@Column(name = "parentid")
 	long parentid;
 	
-	@Column(name = "parenttask", nullable=false)
-	@Size(max = 100, min = 10, message = "{ParentTask.parenttask.invalid}")
-	String parenttask;
+	@Column(name = "parenttaskname", nullable=false)
+	@Size(max = 100, min = 10, message = "{ParentTask.parenttaskname.invalid}")
+	String parenttaskname;
 
 	public long getParentid() {
 		return parentid;
@@ -32,11 +32,20 @@ public class ParentTask {
 		this.parentid = parentid;
 	}
 
-	public String getParenttask() {
-		return parenttask;
+	public String getParenttaskname() {
+		return parenttaskname;
 	}
 
-	public void setParenttask(String parenttask) {
-		this.parenttask = parenttask;
+	public void setParenttaskname(String parenttaskname) {
+		this.parenttaskname = parenttaskname;
+	}
+	
+	public ParentTask() {
+		
+	}
+
+	public ParentTask(@Size(max = 100, min = 10, message = "{ParentTask.parenttaskname.invalid}") String parenttaskname) {
+		super();
+		this.parenttaskname = parenttaskname;
 	}
 }

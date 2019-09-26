@@ -11,6 +11,6 @@ import com.fsd.model.Users;
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
 	
-	@Query("FROM Users WHERE firstname = ?1")
+	@Query("select u FROM Users u WHERE u.firstname like %?1%")
     List<Users> findByFirstName(String firstname);
 }

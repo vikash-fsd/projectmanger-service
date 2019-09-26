@@ -34,7 +34,7 @@ public class ProjectController {
 	public ResponseEntity<?> getAllProjectInOrder(@PathVariable("sort_by") String sort_by) {
 		Sort sort = new Sort(Sort.DEFAULT_DIRECTION, sort_by);
 		List<Project> projects = projectRepository.findAll(sort);
-		return ResponseEntity.ok().body(appResponse = new AppResponse(true, projects, "Project Sorted By "+sort));
+		return ResponseEntity.ok().body(appResponse = new AppResponse(true, projects, "Project Sorted By "+sort_by));
 	}
 	
 	@GetMapping("/Project/{projectid}")

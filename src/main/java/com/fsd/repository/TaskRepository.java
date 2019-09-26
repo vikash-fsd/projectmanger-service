@@ -10,6 +10,13 @@ import com.fsd.model.Task;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-	@Query("FROM Task WHERE taskname = ?1")
+
+	@Query("select t FROM Task t WHERE t.taskname like %?1%")
     List<Task> findByTaskName(String taskname);
+	
+	@Query("select t FROM Task t WHERE t.projectid = ?1")
+    List<Task> findTasksByProjectID(long projectid);
+	
+	@Query("select t FROM Task t WHERE t.projectid = ?1 order by ?2")
+    List<Task> sortProjectTask(long projectid, String sort_by);
 }

@@ -10,6 +10,6 @@ import com.fsd.model.Project;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
-	@Query("FROM Project WHERE projectname = ?1")
+	@Query("select p FROM Project p WHERE p.projectname like %?1%")
     List<Project> findByProjectName(String projectname);
 }
