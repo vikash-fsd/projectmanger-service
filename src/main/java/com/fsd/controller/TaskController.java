@@ -74,16 +74,6 @@ public class TaskController {
 			return ResponseEntity.ok().body(appResponse = new AppResponse(false, null, "Task detail not found for "+parentid));
 	}
 	
-	@GetMapping("/Project/Task/{projectid}")
-	public ResponseEntity<?> getTaskByProjectId(@PathVariable("projectid") long projectid) {
-		List<Task> tasks = taskRepository.findTasksByProjectID(projectid);
-		if(tasks!=null) {
-			return ResponseEntity.ok().body(appResponse = new AppResponse(true, tasks, "Project Task Detail Of "+projectid));
-		}
-		else
-			return ResponseEntity.ok().body(appResponse = new AppResponse(false, null, "Project Task detail not found for "+projectid));
-	}
-	
 	@GetMapping("/searchParentTask/{parenttask}")
 	public ResponseEntity<?> getParentTaskByName(@PathVariable("parenttask") String parenttask) {
 		List<ParentTask> parenttasks = parentTaskRepository.findByParentTaskName(parenttask);

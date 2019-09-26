@@ -8,8 +8,11 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -17,11 +20,12 @@ import com.fsd.model.ParentTask;
 import com.fsd.model.Task;
 import com.fsd.repository.TaskRepository;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class TaskTest extends AbstractTest{
 	@Autowired
 	private TaskRepository taskRepository;
-	
-	
+		
 	@Override
 	@Before
 	public void setUp() {
@@ -36,9 +40,16 @@ public class TaskTest extends AbstractTest{
 
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(200, status);
-		//String content = mvcResult.getResponse().getContentAsString();
-		//Users[] userlist = super.mapFromJson(content, Users[].class);
-		//assertTrue(userlist.length > 0);
+	}
+	
+	@Test
+	public void testGetAllParentTasks() throws Exception {
+		String uri = "/parentTasks";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
 	}
 	
 	@Test
@@ -49,10 +60,16 @@ public class TaskTest extends AbstractTest{
 
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(200, status);
-		//String content = mvcResult.getResponse().getContentAsString();
-		//Users user = super.mapFromJson(content, Users.class);
-		//assertTrue(user.getUserid() == 1);
 	}
+	
+	@Test
+	public void testGettParentTaskById() throws Exception {
+		String uri = "/parentTask/1";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);	}
 	
 	@Test
 	public void testSearchTaskByTaskName() throws Exception {
@@ -62,9 +79,16 @@ public class TaskTest extends AbstractTest{
 
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(200, status);
-		//String content = mvcResult.getResponse().getContentAsString();
-		//Users[] userlist = super.mapFromJson(content, Users[].class);
-		//assertTrue(userlist.length > 0);
+	}
+	
+	@Test
+	public void testGetParentTaskByName() throws Exception {
+		String uri = "/searchParentTask/Testing Parent Task";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
 	}
 	
 	@Test
@@ -74,10 +98,16 @@ public class TaskTest extends AbstractTest{
 				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
 		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);	}
+	
+	@Test
+	public void testGetAllProjectTasksInOrder() throws Exception {
+		String uri = "/sortProjectTasks/1/taskname";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)
+				.accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
 		assertEquals(200, status);
-		//String content = mvcResult.getResponse().getContentAsString();
-		//Users[] userlist = super.mapFromJson(content, Users[].class);
-		//assertTrue(userlist.length > 0);
 	}
 
 	@Test
@@ -94,11 +124,9 @@ public class TaskTest extends AbstractTest{
 
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(200, status);
-		//String content = mvcResult.getResponse().getContentAsString();
-		//assertEquals(content, "User detail has been saved.");
 	}
 	
-	@Test
+	/*@Test
 	public void testAddParentTask() throws Exception {
 		String uri = "/addParentTask";
 		ParentTask parentTask = new ParentTask("Testing Task Parent");
@@ -109,9 +137,7 @@ public class TaskTest extends AbstractTest{
 
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(200, status);
-		//String content = mvcResult.getResponse().getContentAsString();
-		//assertEquals(content, "User detail has been saved.");
-	}
+	}*/
 
 	@Test
 	public void testUpdateTask() throws Exception {		
@@ -128,8 +154,6 @@ public class TaskTest extends AbstractTest{
 
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(200, status);
-		//content = mvcResult.getResponse().getContentAsString();
-		//(content, "User with ID " + user.getUserid() + " has been updated.");
 	}
 
 	@Test
@@ -144,7 +168,5 @@ public class TaskTest extends AbstractTest{
 
 		int status = mvcResult.getResponse().getStatus();
 		assertEquals(200, status);
-		//content = mvcResult.getResponse().getContentAsString();
-		//assertEquals(content, "User with ID " + user.getUserid() + " has been deleted.");
 	}
 }
